@@ -1,0 +1,3 @@
+split,windows,direct_exceedances,slow_exceedances,expanded_exceedances,expanded_incidents,wall_days,incidents_per_day
+calibration,4378,4,4,7,1,2.2534722234375,0.4437596299609925
+development_validation,3184,0,25,25,1,5.570712060023149,0.17951026533506464

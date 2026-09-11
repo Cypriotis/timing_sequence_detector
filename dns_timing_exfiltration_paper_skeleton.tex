@@ -1,0 +1,282 @@
+% Literature-aligned research-paper skeleton for the DNS timing-sequence thesis.
+%
+% Design principle:
+% Keep the paper close to the compact structure repeatedly used in DNS-tunneling
+% and covert-timing-channel research: Introduction -> Related Work -> System /
+% Experimental Design -> Method -> Evaluation/Results -> Discussion -> Conclusion.
+%
+% All prose is intentionally blank. Comments are writing guidance only and do
+% not appear in the compiled paper. Figure/table blocks remain commented until
+% the corresponding artifact is ready.
+
+\documentclass{vgtc}                          % final (conference style)
+%\documentclass[review]{vgtc}                 % review
+%\documentclass[widereview]{vgtc}             % wide-spaced review
+%\documentclass[preprint]{vgtc}               % preprint
+%\documentclass[electronic]{vgtc}             % electronic version
+
+\ifpdf
+  \pdfoutput=1\relax
+  \pdfcompresslevel=9
+  \pdfoptionpdfminorversion=7
+  \ExecuteOptions{pdftex}
+  \usepackage{graphicx}
+  \DeclareGraphicsExtensions{.pdf,.png,.jpg,.jpeg}
+\else
+  \ExecuteOptions{dvips}
+  \usepackage{graphicx}
+  \DeclareGraphicsExtensions{.eps}
+\fi
+
+\graphicspath{{figures/}{pictures/}{images/}{./}}
+
+\usepackage{microtype}
+\PassOptionsToPackage{warn}{textcomp}
+\usepackage{textcomp}
+\usepackage{mathptmx}
+\usepackage{times}
+\renewcommand*\ttdefault{txtt}
+\usepackage{cite}
+\usepackage{tabu}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage{setspace}
+
+\onlineid{0}
+\vgtccategory{Research}
+\vgtcinsertpkg
+
+\title{Detecting DNS Timing-Sequence Data Exfiltration with Benign-Calibrated Temporal Anomaly Detection}
+
+\author{Sotiris Tofinis\\ %
+        \scriptsize Open University of Cyprus
+}
+
+% Write the abstract last:
+% problem -> method -> real benign data + controlled attacks -> main results ->
+% measured limitation / contribution.
+\abstract{}
+
+\begin{document}
+
+\firstsection{Introduction}
+\maketitle
+
+% ======================================================================
+% 1. INTRODUCTION
+% ======================================================================
+%
+% Keep this as one continuous section, as is common in the papers reviewed.
+% Suggested paragraph flow:
+%   1. DNS is necessary and therefore attractive for covert exfiltration.
+%   2. Timing-sequence exfiltration carries information in WHEN queries occur,
+%      so content/signature inspection is not sufficient for this threat.
+%   3. Research gap: detecting weak timing anomalies against real human endpoint
+%      DNS behavior, using benign-only and content-free modeling.
+%   4. State the aim / research questions in prose.
+%   5. End with 3--4 explicit contributions.
+
+
+% ======================================================================
+% 2. BACKGROUND AND RELATED WORK
+% ======================================================================
+
+\section{Background and Related Work}
+
+\subsection{DNS Exfiltration and Covert Timing Channels}
+% Explain DNS exfiltration briefly, then narrow immediately to timing channels.
+% Cover inter-arrival times, low-and-slow behavior, jitter/evasion, and the
+% difference between content-based DNS tunneling and timing-sequence exfiltration.
+
+% FIGURE 1 -- DNS timing-channel concept.
+% One simple timeline: benign DNS activity vs. timing-encoded DNS activity.
+% The visual should make the core thesis understandable without equations.
+%\begin{figure}[t]
+%  \centering
+%  \includegraphics[width=\columnwidth]{fig01_dns_timing_channel_concept}
+%  \caption{Conceptual example of information encoded in the timing sequence of DNS requests.}
+%  \label{fig:timing-concept}
+%\end{figure}
+
+\subsection{Existing Detection Approaches and Research Gap}
+% Organize related work by approach rather than one subsection per paper:
+% statistical timing detectors -> ML timing detectors -> DNS tunneling/exfiltration
+% detectors -> benign/unsupervised behavioral detectors.
+% End with the exact gap addressed by this thesis.
+
+% TABLE 1 -- Compact related-work positioning table.
+% Suggested columns:
+% Work | DNS | Timing-aware | Benign/unsupervised | Content-free | Real benign traffic.
+
+
+% ======================================================================
+% 3. SYSTEM AND EXPERIMENTAL DESIGN
+% ======================================================================
+
+\section{System and Experimental Design}
+
+\subsection{Data, Telemetry, and Testbed}
+% In one subsection cover:
+%   - real benign endpoint DNS capture and duration;
+%   - endpoint/unicast-DNS filtering and Zeek telemetry;
+%   - attack lab topology and capture point;
+%   - parent-domain grouping, 15-minute inactivity/session policy;
+%   - threat/scope statement: endpoint timing detector, not payload inspection.
+
+% FIGURE 2 -- Experimental design / data pipeline.
+% Combine topology and processing into one useful figure:
+% real benign endpoint + controlled attack generator -> Zeek DNS events ->
+% filtering/grouping -> causal feature windows -> detector evaluation.
+%\begin{figure}[t]
+%  \centering
+%  \includegraphics[width=\columnwidth]{fig02_experimental_pipeline}
+%  \caption{Experimental setup and DNS telemetry processing pipeline.}
+%  \label{fig:experimental-pipeline}
+%\end{figure}
+
+\subsection{Timing Attack Profiles}
+% Describe the attack family here, not in many separate subsections:
+% no_jitter; J1--J3; S1 pair-order; S2 context-coupled low-rate; and the S2
+% 0.50, 0.25, and 0.125 boundary variants.
+% Explain what each family was designed to test and verify payload integrity.
+
+% TABLE 2 -- Dataset and attack-profile specification.
+% Suggested columns:
+% Profile | Timing mechanism | Queries | Duration | Purpose | Payload verified.
+
+% FIGURE 3 -- Attack timing profiles.
+% A compact multi-panel/timeline view of no_jitter, J1--J3, S1 and the S2 family.
+% Emphasize how S2 becomes progressively slower / more blended with benign timing.
+
+
+% ======================================================================
+% 4. DETECTION METHOD
+% ======================================================================
+
+\section{Detection Method}
+
+\subsection{Causal Timing Representation}
+% Explain only what the reader needs to reproduce the inputs:
+% trailing same-parent-domain windows; 64-event current window; adjacent prior
+% window for local shifts; no future leakage; undefined first IATs remain null.
+% Then define the final 13 content-free timing features as a table rather than
+% giving every feature its own prose subsection.
+
+% TABLE 3 -- Final 13 timing features.
+% Suggested columns: Feature | Definition | Behavioral interpretation.
+
+\subsection{Locked Direct Detector}
+% Robust benign scaling -> regularized covariance -> squared Mahalanobis score ->
+% benign-calibrated q99.9 locked threshold. State explicitly that attacks do not
+% train the detector and that the direct threshold is not lowered for S2.
+
+\subsection{Sequential Evidence Extension}
+% Explain why this second path was added: 0.25/0.50 S2 produced persistent weak
+% anomaly evidence but no individual direct-threshold crossing.
+%
+% Present the three equations together:
+%   empirical benign upper-tail probability p_t
+%   e_t = max(0, ln(p_0 / p_t))
+%   A_t = exp(-Delta t / tau) A_prev + e_t
+% Then give the benign-calibrated sequential threshold and combined OR rule.
+% Mention 15-minute incident grouping here.
+
+% FIGURE 4 -- Final two-path detector architecture (essential).
+% Timing features -> locked Mahalanobis score -> direct threshold
+%                          |
+%                          -> benign tail probability -> evidence accumulator
+%                             -> sequential threshold
+% direct OR sequential -> alert -> incident grouping.
+%\begin{figure}[t]
+%  \centering
+%  \includegraphics[width=\columnwidth]{fig04_detector_architecture}
+%  \caption{Locked direct detector with the benign-calibrated sequential evidence extension.}
+%  \label{fig:detector-architecture}
+%\end{figure}
+
+
+% ======================================================================
+% 5. EVALUATION AND RESULTS
+% ======================================================================
+
+\section{Evaluation and Results}
+
+\subsection{Evaluation Protocol and Benign Behavior}
+% Define training/calibration/validation roles, eligible windows, locked parameters,
+% detection criteria, detection delay, and benign incidents/day.
+% State clearly which attack profiles were used during detector development.
+
+\subsection{Direct Detector and the S2 Sensitivity Boundary}
+% First present the locked direct results for all attacks.
+% Then focus on the central boundary experiment:
+% 0.125 crosses the direct threshold; 0.25, 0.50 and original S2 do not.
+% Use normalized score/threshold so the boundary is visually obvious.
+
+% FIGURE 5 -- Locked direct results + S2 boundary (essential).
+% Prefer a two-panel figure:
+%   A. all attack profiles vs. direct threshold;
+%   B. only the S2 family, ordered by rate/scale, with y=1 boundary.
+
+\subsection{Expanded Detector Results}
+% Present the direct-vs-expanded comparison and the key finding:
+% sequential evidence recovers 0.25 and 0.50 (and detects 0.125 earlier), while
+% original S2 remains below threshold and defines the measured low-rate limit.
+% Report detection delay and benign incident rate here as part of the tradeoff.
+
+% FIGURE 6 -- S2 sequential-evidence trajectories (essential).
+% Four panels: 0.125, 0.25, 0.50, original S2.
+% Plot direct score/threshold and accumulator/threshold over attack progress.
+% The original-S2 panel should clearly approach but not cross the boundary.
+
+% TABLE 4 -- Main results table; keep all headline numbers in one place.
+% Suggested columns:
+% Profile | Direct detected | Expanded detected | First path | Delay |
+% Max direct/threshold | Max sequential/threshold.
+% Add benign validation incident rate immediately below or in a separate small row.
+
+
+% ======================================================================
+% 6. DISCUSSION AND LIMITATIONS
+% ======================================================================
+
+\section{Discussion and Limitations}
+% Keep this as one coherent section unless it becomes too long.
+%
+% Suggested flow:
+%   1. Answer the research questions directly from the results.
+%   2. Explain why direct scoring detects strong/local timing anomalies while the
+%      sequential path detects persistent weak evidence in slower S2 variants.
+%   3. Interpret the speed--stealth tradeoff and original S2 as the measured
+%      sensitivity/evasion boundary of the current detector.
+%   4. Give operational meaning: real human endpoint, content-free features,
+%      benign-only calibration, detection delay, and incident rate.
+%   5. Limitations: one benign endpoint; controlled attack lab; attack-informed
+%      development of the sequential extension; original S2 miss; concept drift;
+%      no claim of malicious intent/payload decoding; limited mechanism-attribution
+%      controls for S1; need independent endpoints/attacks for broad generalization.
+
+
+% ======================================================================
+% 7. CONCLUSION
+% ======================================================================
+
+\section{Conclusion and Future Work}
+% One concise section:
+% restate the problem -> final detector -> strongest empirical result -> honest
+% sensitivity limit -> next steps (additional endpoints, unseen captures, repeated
+% seeds/start times, matched timing-null controls, concept drift/live deployment).
+
+
+% ======================================================================
+% REFERENCES
+% ======================================================================
+
+%\bibliographystyle{abbrv}
+\bibliographystyle{abbrv-doi}
+%\bibliographystyle{abbrv-doi-narrow}
+%\bibliographystyle{abbrv-doi-hyperref}
+%\bibliographystyle{abbrv-doi-hyperref-narrow}
+
+\bibliography{template}
+
+\end{document}

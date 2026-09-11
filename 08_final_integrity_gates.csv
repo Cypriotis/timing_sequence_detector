@@ -1,0 +1,9 @@
+gate_name,status,observed
+locked model identity retained,PASS,w64__baseline+regularity+local_change__64fd5af306
+locked direct threshold retained,PASS,216.140237928340
+original folder decisions reconstruct exactly,PASS,"{'0125': True, 'j1': True, 'j2': True, 'j3': True, 'new_s2_evaluation': False, 'no_jitter': True, 's1': True, 's2_context_coupled_lowrate': False, 's2_second_attempt': False}"
+sequential calibration is benign only,PASS,empirical reference and q99.9 accumulator threshold from result_split=calibration
+locked direct detector benign budget retained,PASS,direct=0.000000/day; budget=0.050000/day
+expanded incident rate is report-only,PASS,0.179510/day; attack evaluation remains enabled
+all folder profiles evaluated,PASS,"['0125', 'j1', 'j2', 'j3', 'new_s2_evaluation', 'no_jitter', 's1', 's2_context_coupled_lowrate', 's2_second_attempt']"
+current attacks remain development data,PASS,0.125/0.25/0.50 and earlier profiles are not final holdouts

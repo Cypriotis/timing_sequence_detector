@@ -1,0 +1,7 @@
+gate_name,status,observed
+locked candidate unchanged,PASS,w64__baseline+regularity+local_change__64fd5af306
+locked direct threshold unchanged,PASS,216.140237928340
+sequential reference uses benign calibration only,PASS,4378 calibration scores
+sequential threshold uses benign q99.9 only,PASS,35.832336055219
+locked direct detector benign budget retained,PASS,0.000000/day <= 0.050000/day
+expanded benign incident rate (non-blocking),REPORT,0.179510/day; no hard budget enforced for expanded development path
